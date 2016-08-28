@@ -1,0 +1,24 @@
+{
+  "name": "tweeter",
+  "version": "1.0.0",
+  "description": "Tweet skill for Amazon Alexa",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jkarbows/tweeter.git"
+  },
+  "keywords": [
+    "alexa",
+    "skill",
+    "twitter"
+  ],
+  "author": "Jeremy Karbowski",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jkarbows/tweeter/issues"
+  },
+  "homepage": "https://github.com/jkarbows/tweeter#readme"
+}
