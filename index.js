@@ -20,6 +20,9 @@ Tweeter.prototype.eventHandlers.onSessionStarted = function(sessionStartedReques
 
 Tweeter.prototype.eventHandlers.onLaunch = function(launchRequest, session, response) {
     console.log('Tweeter onLaunch requestId' + launchRequest.requestId + ', sessionId: ' + session.sessionId);
+    var speechOutput = "Welcome to Tweeter. Say 'tweet' followed by what you'd like me to tweet for you.";
+    var cardTitle = "Tweeter";
+    response.askWithCard(speechOutput, speechOutput, cardTitle, speechOutput);
 };
 
 Tweeter.prototype.intentHandlers = {

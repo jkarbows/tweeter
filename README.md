@@ -20,7 +20,7 @@ Next, download a copy of [AlexaSkill.js](https://github.com/jkarbows/tweeter/blo
 
 We'll need one more file before we're ready to start writing our skill - secrets.js will hold our user tokens and keys so we can share the source code of the main file without giving everyone access to our twitter account. I've structured mine as follows:
 ```javascript
-module.exports.alexa = 'your-skills-app-id';
+module.exports.alexa = 'your-alexa-skill-app-id';
 
 module.exports.twitter = {
     consumer: {
@@ -44,7 +44,7 @@ var secrets = require('./secrets');
 
 var APP_ID = secrets.alexa;
 ```
-Now that we've got these things available to us, we can sketch out the basic framework of our skill. I've named mine Tweeter, and given it a single intent for tweeting.
+Now that we've got these things available to us, we can sketch out the basic framework of our skill. I've named mine Tweeter, and given it a single intent for handling the creation of new tweets. First, we'll pass in our app id to establish our skill.
 ```javascript
 var Tweeter = function() {
     AlexaSkill.call(this, APP_ID);
@@ -53,31 +53,39 @@ var Tweeter = function() {
 Tweeter.prototype = Object.create(AlexaSkill.prototype);
 Tweeter.prototype.constructor = Tweeter;
 ```
+This is the way we'll set up our skill to use AlexaSkill.js to interact with the Alexa Service.
+
 Then, we set up two basic event handlers for our skill: onSessionStarted and onLaunch. Eventually we'll use onSessionStarted to reject unauthenticated users, but for now we'll just have it log some information and move on.
 ```javascript
 Tweeter.prototype.eventHandlers.onSessionStarted = function(sessionStartedRequest, session) {
-    console.log('Twitter onSessionStarted requestId:' + sessionStartedRequest.requestId +', sessionId: ' + session.sessionId);
+    console.log('Twitter onSessionStarted requestId:' + sessionStartedRequest.requestId +', sessionId: '
+        + session.sessionId);
 };
 
 Tweeter.prototype.eventHandlers.onLaunch = function(launchRequest, session, response) {
     console.log('Tweeter onLaunch requestId' + launchRequest.requestId + ', sessionId: ' + session.sessionId);
+    var speechOutput = "Welcome to Tweeter. Say 'tweet' followed by what you'd like me to tweet for you.";
+    var cardTitle = "Tweeter";
+    response.askWithCard(speechOutput, speechOutput, cardTitle, speechOutput);
 };
-
+```
+The onLaunch function handles when our skill is launched without an intent. It prompts the user to form a new tweet, and waits for a response. We're using the askWithCard method, so the user will receive a card in their Alexa app with some information about our skill. Right now we're using the same output to reprompt the user if they take too long to respond and to print on the card, but you can output anything there. Card formatting is still limited to only newlines and images, so Skills are forced into using rather simple cards. Right now we're limited to only simple cards, but we'll go over how to create cards with images in part 2.
+```javascript
 Tweeter.prototype.intentHandlers = {
     "TweetIntent": function(intent, session, response) {
-
+        // Handle Tweet creation
     }
 };
 ```
-The onLaunch function handles when our skill is launched without an intent. The Tweet intent is where the real magic will happen. Before that we have one last bit of code to add on to the end of our file so that it can execute.
+The Tweet intent is where the real magic will happen. But, before we write that we have one last bit of code to add on to the end of our file so that it can execute.
 ```javascript
 exports.handler = function(event, context) {
     var tweeterHelper = new Tweeter();
     tweeterHelper.execute(event, context);
 };
 ```
-This code will allow us to run our skill as an AWS Lambda function, invoking the execute method in AlexaSkill.js
+This will allow us to run our skill as an AWS Lambda function, invoking the execute method in AlexaSkill.js and running our code.
 
-## So how about that Tweeting thing
+## So about that Tweeting thing
 
 
