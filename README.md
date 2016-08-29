@@ -28,11 +28,12 @@ module.exports.twitter = {
         secret: 'your-twitter-consumer-secret'
     },
     user: {
-        public: 'your-twitter-user-token',
+        token: 'your-twitter-user-token',
         secret: 'your-twitter-user-secret'
     }
 }
 ```
+You can get these tokens from the [twitter developer console](https://apps.twitter.com/) and the [amazon developer console](https://developer.amazon.com/edw/home.html#/skills/list).
 
 ## Time to write some code
 
@@ -86,6 +87,47 @@ exports.handler = function(event, context) {
 ```
 This will allow us to run our skill as an AWS Lambda function, invoking the execute method in AlexaSkill.js and running our code.
 
-## So about that Tweeting thing
+## So about that "Tweeting" thing
+
+Alright, it's finally time to actually send out our tweets. First we'll prepare the oauth module to interact with Twitter.
+```javascript
+var oauth = new OAuth.OAuth(
+    'https://api.twitter.com/oauth/request_token',
+    'https://api.twitter.com/oauth/access_token',
+    secrets.twitter.consumer.public,
+    secrets.twitter.consumer.secret,
+    '1.0A',
+    null,
+    'HMAC-SHA1'
+);
+```
+Then, we'll set up our variables for our response to the user, and the store the user input and the url we're going to post to in our interaction with the twitter api.
+```javascript
+var speechOutput = "";
+var cardTitle = "Tweeter";
+
+var input = intent.slots.input.value;
+var url = 'https://api.twitter.com/1.1/statuses/update.json?status=' + input;
+```
+And finally we send it out and we're good to go. Tack on a little bit of error handling and output a card to the user's Alexa app with the tweet content for good measure, and we've got a basic app.
+```javascript
+oauth.post(
+    url,
+    secrets.twitter.user.token,
+    secrets.twitter.user.secret,
+    null,
+    function(err, data, res) {
+        if(err) {
+            speechOutput = "There was an error communicating with Twitter. Try again later.";
+            response.tell(speechOutput);
+        }
+        speechOutput = "Okay, I tweeted: \"" + input + "\" for you.";
+        response.tellWithCard(speechOutput, cardTitle, speechOutput);
+    }
+)
+```
+We've only got to set up our interaction model and we'll be able to tweet from our echo!
+
+## The Interaction Model
 
 
