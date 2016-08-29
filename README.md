@@ -1,6 +1,6 @@
 # Using Amazon's Alexa Javascript SDK to Tweet With Your Voice
 
-We're going to build a skill to tweet with your voice. \
+Hopefully by now you've had a chance to check out Amazon's Alexa platform and their skills marketplace. Maybe you've even had a chance to build a skill or two yourself. If you're like me then you've noticed the distinct lack of skills that allow you to interact with other people. Most skills are limited to things like trivia or one-off interactions with objects and technology in the physical world. The user's options for interacting with other people are very limited. Today, we're going to make it easy to speak your mind by writing a skill to tweet with your voice using the Amazon Alexa JavaScript SDK and a little bit of node magic.
 
 ## Our toolbelt
 
@@ -156,6 +156,8 @@ TweetIntent tweet {input} {input} {input}
 TweetIntent tweet {input} {input} {input} {input}
 ```
 Collecting multi-word strings tends to not work unless you collect your input slots like this. While Amazon's certification team will recommend that you name each slot differently, and don't reuse the same slot multiple times in the same intent, this allows for strings of indefinite length and seems to allow for more flexible input in my testing.
+
+With the interaction model set up, you can begin testing your skill through the developer console or on your echo.
 
 ## What now?
 
