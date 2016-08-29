@@ -109,7 +109,7 @@ var cardTitle = "Tweeter";
 var input = intent.slots.input.value;
 var url = 'https://api.twitter.com/1.1/statuses/update.json?status=' + input;
 ```
-And finally we send it out and we're good to go. Tack on a little bit of error handling and output a card to the user's Alexa app with the tweet content for good measure, and we've got a basic app.
+And finally we send it out and we're good to go. Tack on a little bit of error handling and output a card to the user's Alexa app with the tweet content for good measure, and we've got our basic tweeting skill almost completed.
 ```javascript
 oauth.post(
     url,
@@ -126,8 +126,32 @@ oauth.post(
     }
 )
 ```
-We've only got to set up our interaction model and we'll be able to tweet from our echo!
+Zip up your whole project folder, including the node_modules directory, and upload it to your lambda skill, then we've only got to set up our interaction model and we'll be able to tweet from our echo!
 
 ## The Interaction Model
 
+The interaction model for our skill is rather straightforward, since there's only one intent for the user to perform. Starting with the Intent Schema:
+```javascript
+{
+  "intents": [
+    {
+      "intent": "TweetIntent",
+      "slots": [
+        {
+          "name": "input",
+          "type": "INPUT_VALUE"
+        }
+      ]
+    }
+  ]
+}
+```
+Our Tweet intent accepts a single slot named to a generic input custom slot type named INPUT_VALUE that contains a short dictionary of common English vocabulary to enable users to tweet a wide variety of phrases. Amazon doesn't support this sort of general input model for skills very well, so tread carefully here. This is generally the best solution for trying to accept generic input from users. You can find the full list of slot values in the [interaction model folder](https://github.com/jkarbows/tweeter/tree/master/interaction-model) in the [github repository](https://github.com/jkarbows/tweeter).
 
+The Sample Utterances are simply "tweet" followed by one to four inputs. Collecting multi-word strings tends to not work unless you collect your input slots like this. While Amazon's certification team will recommend that you name each slot differently, and don't reuse the same slot multiple times in the same intent, this allows for strings of indefinite length and seems to allow for more flexible input in my testing.
+```
+TweetIntent tweet {input}
+TweetIntent tweet {input} {input}
+TweetIntent tweet {input} {input} {input}
+TweetIntent tweet {input} {input} {input} {input}
+```
