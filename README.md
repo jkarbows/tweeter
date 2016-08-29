@@ -1,6 +1,6 @@
 # Using Amazon's Alexa Javascript SDK to Tweet With Your Voice
 
-We're going to build a skill to tweet with your voice. In Part 2 we'll talk about how to extend Amazon's code to support other card types, and some of the things you need to get your skill certified. We could totally have a Part 3 to talk about user authentication and certification.
+We're going to build a skill to tweet with your voice. \
 
 ## Our toolbelt
 
@@ -126,7 +126,7 @@ oauth.post(
     }
 )
 ```
-Zip up your whole project folder, including the node_modules directory, and upload it to your lambda skill, then we've only got to set up our interaction model and we'll be able to tweet from our echo!
+Zip up your whole project folder, including the node_modules directory, and upload it to your lambda function, then we've only got to set up our interaction model and we'll be able to tweet from our echo!
 
 ## The Interaction Model
 
@@ -148,10 +148,17 @@ The interaction model for our skill is rather straightforward, since there's onl
 ```
 Our Tweet intent accepts a single slot named to a generic input custom slot type named INPUT_VALUE that contains a short dictionary of common English vocabulary to enable users to tweet a wide variety of phrases. Amazon doesn't support this sort of general input model for skills very well, so tread carefully here. This is generally the best solution for trying to accept generic input from users. You can find the full list of slot values in the [interaction model folder](https://github.com/jkarbows/tweeter/tree/master/interaction-model) in the [github repository](https://github.com/jkarbows/tweeter).
 
-The Sample Utterances are simply "tweet" followed by one to four inputs. Collecting multi-word strings tends to not work unless you collect your input slots like this. While Amazon's certification team will recommend that you name each slot differently, and don't reuse the same slot multiple times in the same intent, this allows for strings of indefinite length and seems to allow for more flexible input in my testing.
+The Sample Utterances are simply "tweet" followed by one to four inputs.
 ```
 TweetIntent tweet {input}
 TweetIntent tweet {input} {input}
 TweetIntent tweet {input} {input} {input}
 TweetIntent tweet {input} {input} {input} {input}
 ```
+Collecting multi-word strings tends to not work unless you collect your input slots like this. While Amazon's certification team will recommend that you name each slot differently, and don't reuse the same slot multiple times in the same intent, this allows for strings of indefinite length and seems to allow for more flexible input in my testing.
+
+## What now?
+
+Congratulations, you(should) now have a skill you can use to tweet with your voice! If you're having trouble, all of the code we've written here today is available in a [github repo](https://github.com/jkarbows/tweeter), feel free to check it out, and reach out with any questions.
+
+In Part 2 of this article we'll talk about how to extend Amazon's code to support other card types, and some of the things you need to get your skill certified. We could totally have a Part 3 to talk about user authentication and certification, too.
