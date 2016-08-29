@@ -1,0 +1,4 @@
+TweetIntent tweet {input}
+TweetIntent tweet {input} {input}
+TweetIntent tweet {input} {input} {input}
+TweetIntent tweet {input} {input} {input} {input}

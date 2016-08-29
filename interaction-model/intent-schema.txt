@@ -1,0 +1,13 @@
+{
+  "intents": [
+    {
+      "intent": "TweetIntent",
+      "slots": [
+        {
+          "name": "input",
+          "type": "INPUT_VALUE"
+        }
+      ]
+    }
+  ]
+}
